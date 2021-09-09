@@ -4,10 +4,21 @@
 #include <iostream>
 #include <time.h>
 
-void generatePosition();
+// struct Location: Defines a location with 3 coordinates
+struct Location {
+  int x;
+  int y;
+  int z;
+};
+
+struct Location generatePosition(void); // Function to get a random location
 
 using namespace std;
 
+/**
+ * [main description]
+ * @return [description]
+ */
 int main() {
   int interval = 1; // Frequency 1 Hz
 
@@ -23,6 +34,17 @@ int main() {
   return 0;
 }
 
-void generatePosition() {
-  cout << "Generated" << endl;
+/**
+ * [generatePosition description]
+ * @return [description]
+ */
+struct Location generatePosition() {
+  struct Location l;
+  l.x = 10;
+  l.y = 10;
+  l.z = 10;
+
+  cout << "x = " << l.x << "\ny = " << l.y << "\nz = " << l.z << endl;
+
+  return l;
 }
