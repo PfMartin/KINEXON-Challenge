@@ -28,11 +28,12 @@ int main(void) {
 
   time_t start = time(0);
 
-  // Initialize random seed
-  srand(time(NULL));
+  srand(time(NULL)); // Initialize a random seed
 
   while(1) {
     if(time(0)-start == FREQUENCY) {
+      // Assign coordinates to a Location in the locations arrays
+      // Print the coordinates for each Location
       for (int i = 0; i < 10; i++) {
         locations[i] = generateLocation();
         printLocation(locations[i], i);
@@ -46,7 +47,7 @@ int main(void) {
 }
 
 /**
- * generateLocation: Function to generate a random location
+ * generateLocation: Function to generate a random coordinates for a Location
  * @return        Returns a Location structure with x, y, and z coordinates
  */
 struct Location generateLocation(void) {
@@ -76,6 +77,8 @@ int generateRandomNumber(int max_limit) {
   int random_number;
 
   random_number = rand() % max_limit + 1;
+
+  // Vector calculation with the maximum speed for a human beeing
 
   return random_number;
 }
