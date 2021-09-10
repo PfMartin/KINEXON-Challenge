@@ -4,6 +4,8 @@
 #include <iostream>
 #include <stdlib.h>
 
+#define FREQUENCY 1
+
 // struct Location: Structure to define a location with 3 coordinates
 struct Location {
   int x;
@@ -22,7 +24,7 @@ using namespace std;
  * @return        Returns 0
  */
 int main(void) {
-  int interval = 1; // Frequency 1 Hz
+  struct Location locations[10]; // Array of locations
 
   time_t start = time(0);
 
@@ -30,30 +32,13 @@ int main(void) {
   srand(time(NULL));
 
   while(1) {
-    if(time(0)-start == interval) {
-      struct Location l1 = generateLocation();
-      struct Location l2 = generateLocation();
-      struct Location l3 = generateLocation();
-      struct Location l4 = generateLocation();
-      struct Location l5 = generateLocation();
-      struct Location l6 = generateLocation();
-      struct Location l7 = generateLocation();
-      struct Location l8 = generateLocation();
-      struct Location l9 = generateLocation();
-      struct Location l10 = generateLocation();
+    if(time(0)-start == FREQUENCY) {
+      for (int i = 0; i < 10; i++) {
+        locations[i] = generateLocation();
+        printLocation(locations[i], i);
+      }
 
-      printLocation(l1, 1);
-      printLocation(l2, 2);
-      printLocation(l3, 3);
-      printLocation(l4, 4);
-      printLocation(l5, 5);
-      printLocation(l6, 6);
-      printLocation(l7, 7);
-      printLocation(l8, 8);
-      printLocation(l9, 9);
-      printLocation(l10, 10);
-
-      start = start + interval;
+      start = start + FREQUENCY;
     }
   }
 
