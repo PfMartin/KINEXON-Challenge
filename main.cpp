@@ -68,23 +68,22 @@ float get_rand_float(float lower_limit, float upper_limit) {
 
 /**
  * init_loc: Function to generate random coordinates for a Location
- * @return        Returns a Location structure with x, y, and z coordinates
+ *  * @return  [struct Location]  Returns a Location structure with x, y, and z coordinates
  */
 struct Location init_loc(void) {
   struct Location loc;
 
-  int upper_limit = 100;
-
-  loc.x = get_rand_float(0, upper_limit);
-  loc.y = get_rand_float(0, upper_limit);
-  loc.z = get_rand_float(0, upper_limit);
+  loc.x = get_rand_float(LOC_MIN, LOC_MAX);
+  loc.y = get_rand_float(LOC_MIN, LOC_MAX);
+  loc.z = get_rand_float(LOC_MIN, LOC_MAX);
 
   return loc;
 }
 
 /**
  * update_loc: Function to update the location by adding or substacting a random float
- * @return  [description]
+ * @param   [struct Location]   loc   Location, that should be updated
+ * @return  [struct Location]   Returns the new location
  */
 struct Location update_loc(struct Location loc) {
   float dist_low_x; // Distance to upper limit of x
