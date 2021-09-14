@@ -2,83 +2,117 @@
 // Description: Runs the main program for the challenge
 
 #include <iostream>
-#include <stdlib.h>
+#include <random>
+#include <chrono>
+#include <thread>
 
-#define FREQUENCY 1
+#define     PERIOD          1000      // Cycle duration in milliseconds
+#define     SPEED_MAX       12.4      // Maximum distance in 1 second in meters
+#define     LOC_MAX         100       // Upper limit of x and y
+#define     LOC_MIN         0         // Lower limit of x and y
 
 // struct Location: Structure to define a location with 3 coordinates
 struct Location {
-  int x;
-  int y;
-  int z;
+  float x;
+  float y;
+  float z;
 };
-
-struct Location generateLocation(void); // Function to generate a random location
-void printLocation(struct Location l, int location_number); // Function to print the coordinates of a Location structure
-int generateRandomNumber(int max_limit);
-
-using namespace std;
+// Function to generate a random float
+float get_rand_float(float upper_limit);
+// Function to generate a random location
+struct Location init_loc(void);
+// Funtion to update the location with random coordinates
+struct Location update_loc(struct Location loc);
+// Function to print the coordinates of a Location structure
+void print_loc(struct Location l, int loc_nr);
 
 /**
  * main: Main function
- * @return        Returns 0
+ * @return      [int]       0
  */
 int main(void) {
-  struct Location locations[10]; // Array of locations
+  // Array of locations
+  struct Location locs[10];
 
-  time_t start = time(0);
-
-  srand(time(NULL)); // Initialize a random seed
+  // Initialize locations
+  for(int i = 0; i < 10; i++) {
+    locs[i] = init_loc();
+  }
 
   while(1) {
-    if(time(0)-start == FREQUENCY) {
-      // Assign coordinates to a Location in the locations arrays
-      // Print the coordinates for each Location
-      for (int i = 0; i < 10; i++) {
-        locations[i] = generateLocation();
-        printLocation(locations[i], i);
-      }
+    locs[0] = update_loc(locs[0]);
+    print_loc(locs[0], 0);
+    // for(int i = 0; i < 10; i++) {
+    //   locs[i] = update_loc();
+    //   print_loc(locs[i], i);
+    // }
 
-      start = start + FREQUENCY;
-    }
+    std::this_thread::sleep_for(std::chrono::milliseconds(PERIOD));
   }
 
   return 0;
 }
 
 /**
- * generateLocation: Function to generate a random coordinates for a Location
+ * get_rand_float: Function to generate a random float between 0 and a given maximum limit using a uniform distribution
+ * @param   [float]   upper_limit   Defines the upper limit for the distribution
+ * @return  [float]   Returns the generated random float
+ */
+float get_rand_float(float lower_limit, float upper_limit) {
+  std::random_device rand_float;
+  std::mt19937 generator(rand_float());
+  std::uniform_real_distribution<float> distrib(lower_limit, upper_limit);
+
+  return distrib(generator);
+}
+
+/**
+ * init_loc: Function to generate random coordinates for a Location
  * @return        Returns a Location structure with x, y, and z coordinates
  */
-struct Location generateLocation(void) {
-  struct Location l;
+struct Location init_loc(void) {
+  struct Location loc;
 
-  l.x = generateRandomNumber(100);
-  l.y = generateRandomNumber(100);
-  l.z = generateRandomNumber(100);
+  int upper_limit = 100;
 
-  return l;
+  loc.x = get_rand_float(0, upper_limit);
+  loc.y = get_rand_float(0, upper_limit);
+  loc.z = get_rand_float(0, upper_limit);
+
+  return loc;
 }
 
 /**
- * printLocation: Function to print the coordinates of a Location structure
- * @param l       struct Location of which the coordinates should be printed out
+ * update_loc: Function to update the location by adding or substacting a random float
+ * @return  [description]
  */
-void printLocation(struct Location l, int location_number) {
-  cout << "x" << location_number << " = " << l.x << "\ny" << location_number << " = " << l.y << "\nz" << location_number << " = " << l.z << endl;
+struct Location update_loc(struct Location loc) {
+  float dist_low_x; // Distance to upper limit of x
+  float dist_up_x;  // Distance to lower limit of x
+  float dist_low_y; // Distance to upper limit of y
+  float dist_up_y;  // Distance of lower limit of y
+
+  dist_low_x = LOC_MIN + loc.x;
+  dist_up_x = LOC_MAX - loc.x;
+  dist_low_y = LOC_MIN + loc.y;
+  dist_up_y = LOC_MAX - loc.y;
+
+  loc.x = loc.x + get_rand_float(-dist_low_x, dist_up_x);
+  loc.y = loc.y + get_rand_float(-dist_low_y, dist_up_y);
+  // loc.z = loc.z + get_rand_float(-30, 30);
+
+  return loc;
 }
 
 /**
- * generateRandomNumber: Function to generate a random number
- * @param  max_limit Defines the upper limit for the random number
- * @return           Random number
+ * print_loc: Function to print the coordinates of a Location structure
+ * @param loc       struct Location of which the coordinates should be printed out
  */
-int generateRandomNumber(int max_limit) {
-  int random_number;
-
-  random_number = rand() % max_limit + 1;
-
-  // Vector calculation with the maximum speed for a human beeing
-
-  return random_number;
+void print_loc(struct Location loc, int loc_nr) {
+  std::cout
+    << "Location Sensor " << loc_nr << ": \n"
+    << "x" << loc_nr << " = " << loc.x
+    << " | y" << loc_nr << " = " << loc.y
+    << " | z" << loc_nr << " = " << loc.z
+    << std::endl;
 }
