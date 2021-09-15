@@ -7,7 +7,7 @@
 #include <thread>
 
 #define     PERIOD          1000      // Cycle duration in milliseconds
-#define     SPEED_MAX       12.4      // Maximum distance in 1 second in meters
+#define     DIST_MAX        8.76      // Maximum distance in 1 second in meters
 #define     LOC_MAX         100       // Upper limit of x and y
 #define     LOC_MIN         0         // Lower limit of x and y
 
@@ -24,7 +24,8 @@ struct Location init_loc(void);
 // Funtion to update the location with random coordinates
 struct Location update_loc(struct Location loc);
 // Function to print the coordinates of a Location structure
-void print_loc(struct Location l, int loc_nr);
+void print_loc(struct Location loc, int loc_nr);
+struct Location add_noise(struct Location loc);
 
 /**
  * main: Main function
@@ -86,19 +87,26 @@ struct Location init_loc(void) {
  * @return  [struct Location]   Returns the new location
  */
 struct Location update_loc(struct Location loc) {
-  float dist_low_x; // Distance to upper limit of x
-  float dist_up_x;  // Distance to lower limit of x
-  float dist_low_y; // Distance to upper limit of y
-  float dist_up_y;  // Distance of lower limit of y
+  float new_loc_x = loc.x + get_rand_float(-DIST_MAX, DIST_MAX);
+  float new_loc_y = loc.y + get_rand_float(-DIST_MAX, DIST_MAX);
 
-  dist_low_x = LOC_MIN + loc.x;
-  dist_up_x = LOC_MAX - loc.x;
-  dist_low_y = LOC_MIN + loc.y;
-  dist_up_y = LOC_MAX - loc.y;
+  if(new_loc_x < LOC_MIN) {
+    loc.x = LOC_MIN;
+  } else if(new_loc_x > LOC_MAX) {
+    loc.x = LOC_MAX;
+  } else {
+    loc.x = new_loc_x;
+  }
 
-  loc.x = loc.x + get_rand_float(-dist_low_x, dist_up_x);
-  loc.y = loc.y + get_rand_float(-dist_low_y, dist_up_y);
-  // loc.z = loc.z + get_rand_float(-30, 30);
+  if(new_loc_y < LOC_MIN) {
+    loc.y = LOC_MIN;
+  } else if(new_loc_y > LOC_MAX) {
+    loc.y = LOC_MAX;
+  } else {
+    loc.y = new_loc_y;
+  }
+
+
 
   return loc;
 }
@@ -114,4 +122,10 @@ void print_loc(struct Location loc, int loc_nr) {
     << " | y" << loc_nr << " = " << loc.y
     << " | z" << loc_nr << " = " << loc.z
     << std::endl;
+};
+
+struct Location add_noise(struct Location loc) {
+  std::cout << "add noise" << std::endl;
+
+  return loc;
 }
