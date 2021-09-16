@@ -20,6 +20,8 @@ struct Location {
   float z;
 };
 
+// Function to return either +1 or -1
+int get_pos_neg();
 // Function to generate a random float using a uniform distribution
 float get_rand_float_uni(float, float);
 // Function to generate a random float using a normal distribution
@@ -33,12 +35,12 @@ void print_loc(struct Location, int);
 // Function to add white noise to a Location
 struct Location add_white_noise(struct Location);
 
-int get_rand_int_uni(int lower_limit, int upper_limit) {
-  std::random_device rand_int;
-  std::mt19937 generator(rand_int());
-  std::uniform_int_distribution<int> distrib(lower_limit, upper_limit);
-
-  return distrib(generator);
+/**
+ * get_pos_neg: Function to return either -1 or 1 depending on the binary value of the random number. In case the second bit is set the function returns 1. In case it's not set, the function returns -1
+ * @return  [integer]   Returns either 1 or -1
+ */
+int get_pos_neg() {
+  return (random() & 2) - 1;
 }
 
 /**
@@ -95,23 +97,9 @@ struct Location update_loc(struct Location loc) {
   const float z_mean = 1.75;
 
   // Update coordinates
-  if(get_rand_int_uni(0, 1) == 1) {
-    loc.x = loc.x + get_rand_float_norm(max_dist / 2, max_dist / 3);
-  } else {
-    loc.x = loc.x - get_rand_float_norm(max_dist / 2, max_dist / 3);
-  }
+  loc.x = loc.x + get_pos_neg() * get_rand_float_norm(max_dist / 2, max_dist / 3);
 
-  if(get_rand_int_uni(0, 1) == 1) {
-    loc.y = loc.y + get_rand_float_norm(max_dist / 2, max_dist / 3);
-  } else {
-    loc.y = loc.y - get_rand_float_norm(max_dist / 2, max_dist / 3);
-  }
-
-  if(get_rand_int_uni(0, 1) == 1) {
-    loc.z = loc.z + get_rand_float_uni(z_min, z_max);
-  } else {
-    loc.z = loc.z - get_rand_float_uni(z_min, z_max);
-  }
+  loc.y = loc.y + get_pos_neg() * get_rand_float_norm(max_dist / 2, max_dist / 3);
 
   // Check limits
   if(loc.x < xy_min) {
@@ -126,12 +114,8 @@ struct Location update_loc(struct Location loc) {
     loc.y = xy_max;
   }
 
-  if(loc.z < z_min) {
-    loc.z = z_min;
-  } else if(loc.z > z_max) {
-    loc.z = z_max;
-  }
-
+  // z can be calculated directly since there is no speed limit
+  loc.z = get_rand_float_norm(z_mean, z_mean / 5);
 
   loc = add_white_noise(loc);
 
