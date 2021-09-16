@@ -26,6 +26,8 @@ int main(void) {
   }
 
   while(1) {
+    // locs[0] = update_loc(locs[0]);
+    // print_loc(locs[0], 0);
     for(int i = 0; i < 10; i++) {
       locs[i] = update_loc(locs[i]);
       print_loc(locs[i], i);

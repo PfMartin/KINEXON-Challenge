@@ -9,8 +9,9 @@
 
 const int xy_max = 100;   // Upper limit of x and y in meter
 const int xy_min = 0;     // Lower limit of x and y in meter
-const int z_max = 2.5;    // Upper Limit of z in meter
+const int z_max = 3.5;    // Upper Limit of z in meter
 const int z_min = 0;      // Lower Limit of z in meter
+const int z_mean = 1.75;  // Average height of the sensor in meter
 
 // struct Location: Structure to define a location with 3 coordinates
 struct Location {
@@ -31,6 +32,14 @@ struct Location update_loc(struct Location);
 void print_loc(struct Location, int);
 // Function to add white noise to a Location
 struct Location add_white_noise(struct Location);
+
+int get_rand_int_uni(int lower_limit, int upper_limit) {
+  std::random_device rand_int;
+  std::mt19937 generator(rand_int());
+  std::uniform_int_distribution<int> distrib(lower_limit, upper_limit);
+
+  return distrib(generator);
+}
 
 /**
  * get_rand_float_uni: Function to generate a random float between 0 and a given maximum limit using a uniform distribution
@@ -65,11 +74,13 @@ float get_rand_float_norm(float mu, float sigma) {
  *  * @return  [struct Location]  Returns a Location structure with x, y, and z coordinates
  */
 struct Location init_loc(void) {
+  const float z_init_max = 2;
+  const float z_init_min = 1.5;
   struct Location loc;
 
   loc.x = get_rand_float_uni(xy_min, xy_max);
   loc.y = get_rand_float_uni(xy_min, xy_max);
-  loc.z = get_rand_float_uni(z_min, z_max);
+  loc.z = get_rand_float_uni(z_init_min, z_init_max);
 
   return loc;
 }
@@ -81,33 +92,46 @@ struct Location init_loc(void) {
  */
 struct Location update_loc(struct Location loc) {
   const float max_dist = 8.76;      // Maximum distance in 1 second in meter
-  float new_loc_x = loc.x + get_rand_float_uni(-max_dist, max_dist);
-  float new_loc_y = loc.y + get_rand_float_uni(-max_dist, max_dist);
-  float new_loc_z = loc.z + get_rand_float_uni(-z_max, z_max);
+  const float z_mean = 1.75;
 
-  if(new_loc_x < xy_min) {
+  // Update coordinates
+  if(get_rand_int_uni(0, 1) == 1) {
+    loc.x = loc.x + get_rand_float_norm(max_dist / 2, max_dist / 3);
+  } else {
+    loc.x = loc.x - get_rand_float_norm(max_dist / 2, max_dist / 3);
+  }
+
+  if(get_rand_int_uni(0, 1) == 1) {
+    loc.y = loc.y + get_rand_float_norm(max_dist / 2, max_dist / 3);
+  } else {
+    loc.y = loc.y - get_rand_float_norm(max_dist / 2, max_dist / 3);
+  }
+
+  if(get_rand_int_uni(0, 1) == 1) {
+    loc.z = loc.z + get_rand_float_uni(z_min, z_max);
+  } else {
+    loc.z = loc.z - get_rand_float_uni(z_min, z_max);
+  }
+
+  // Check limits
+  if(loc.x < xy_min) {
     loc.x = xy_min;
-  } else if(new_loc_x > xy_max) {
+  } else if(loc.x > xy_max){
     loc.x = xy_max;
-  } else {
-    loc.x = new_loc_x;
   }
 
-  if(new_loc_y < xy_min) {
+  if(loc.y < xy_min) {
     loc.y = xy_min;
-  } else if(new_loc_y > xy_max) {
+  } else if(loc.y > xy_max){
     loc.y = xy_max;
-  } else {
-    loc.y = new_loc_y;
   }
 
-  if(new_loc_z < z_min) {
+  if(loc.z < z_min) {
     loc.z = z_min;
-  } else if(new_loc_z > z_max) {
+  } else if(loc.z > z_max) {
     loc.z = z_max;
-  } else {
-    loc.z = new_loc_z;
   }
+
 
   loc = add_white_noise(loc);
 
