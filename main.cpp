@@ -18,14 +18,15 @@ struct Location {
   float z;
 };
 // Function to generate a random float
-float get_rand_float(float upper_limit);
+float get_rand_float(float, float);
 // Function to generate a random location
 struct Location init_loc(void);
 // Funtion to update the location with random coordinates
-struct Location update_loc(struct Location loc);
+struct Location update_loc(struct Location);
 // Function to print the coordinates of a Location structure
-void print_loc(struct Location loc, int loc_nr);
-struct Location add_noise(struct Location loc);
+void print_loc(struct Location, int);
+// Function to add white noise to a Location
+struct Location add_white_noise(struct Location);
 
 /**
  * main: Main function
@@ -106,14 +107,14 @@ struct Location update_loc(struct Location loc) {
     loc.y = new_loc_y;
   }
 
-
+  loc = add_white_noise(loc);
 
   return loc;
 }
 
 /**
  * print_loc: Function to print the coordinates of a Location structure
- * @param loc       struct Location of which the coordinates should be printed out
+ * @param   [struct Location]   loc   Location of which the coordinates should be printed out
  */
 void print_loc(struct Location loc, int loc_nr) {
   std::cout
@@ -124,8 +125,19 @@ void print_loc(struct Location loc, int loc_nr) {
     << std::endl;
 };
 
-struct Location add_noise(struct Location loc) {
-  std::cout << "add noise" << std::endl;
+/**
+ * add_white_noise: Function to add white noise to a Location structure
+ * @param   [struct Location]   loc   Location the white noise should be added to
+ * @return     [description]
+ */
+struct Location add_white_noise(struct Location loc) {
+  std::random_device rand_float;
+  std::mt19937 generator(rand_float());
+  std::normal_distribution<float> distrib(0, 0.01); // mean, std deviation
+
+  loc.x = loc.x + distrib(generator);
+  loc.y = loc.y + distrib(generator);
+  loc.z = loc.z + distrib(generator);
 
   return loc;
 }
