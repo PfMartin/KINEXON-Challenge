@@ -6,11 +6,11 @@
 #include <chrono>
 #include <thread>
 
-#define     DIST_MAX        8.76      // Maximum distance in 1 second in meter
-#define     LOC_MAX         100       // Upper limit of x and y in meter
-#define     LOC_MIN         0         // Lower limit of x and y in meter
-#define     HEIGHT_MAX      2.5       // Upper Limit of z in meter
-#define     HEIGHT_MIN      0         // Lower Limit of z in meter
+
+const int xy_max = 100;   // Upper limit of x and y in meter
+const int xy_min = 0;     // Lower limit of x and y in meter
+const int z_max = 2.5;    // Upper Limit of z in meter
+const int z_min = 0;      // Lower Limit of z in meter
 
 // struct Location: Structure to define a location with 3 coordinates
 struct Location {
@@ -67,9 +67,9 @@ float get_rand_float_norm(float mu, float sigma) {
 struct Location init_loc(void) {
   struct Location loc;
 
-  loc.x = get_rand_float_uni(LOC_MIN, LOC_MAX);
-  loc.y = get_rand_float_uni(LOC_MIN, LOC_MAX);
-  loc.z = get_rand_float_uni(HEIGHT_MIN, HEIGHT_MAX);
+  loc.x = get_rand_float_uni(xy_min, xy_max);
+  loc.y = get_rand_float_uni(xy_min, xy_max);
+  loc.z = get_rand_float_uni(z_min, z_max);
 
   return loc;
 }
@@ -80,30 +80,31 @@ struct Location init_loc(void) {
  * @return  [struct Location]   Returns the new location
  */
 struct Location update_loc(struct Location loc) {
-  float new_loc_x = loc.x + get_rand_float_uni(-DIST_MAX, DIST_MAX);
-  float new_loc_y = loc.y + get_rand_float_uni(-DIST_MAX, DIST_MAX);
-  float new_loc_z = loc.z + get_rand_float_uni(-HEIGHT_MAX, HEIGHT_MAX);
+  const float max_dist = 8.76;      // Maximum distance in 1 second in meter
+  float new_loc_x = loc.x + get_rand_float_uni(-max_dist, max_dist);
+  float new_loc_y = loc.y + get_rand_float_uni(-max_dist, max_dist);
+  float new_loc_z = loc.z + get_rand_float_uni(-z_max, z_max);
 
-  if(new_loc_x < LOC_MIN) {
-    loc.x = LOC_MIN;
-  } else if(new_loc_x > LOC_MAX) {
-    loc.x = LOC_MAX;
+  if(new_loc_x < xy_min) {
+    loc.x = xy_min;
+  } else if(new_loc_x > xy_max) {
+    loc.x = xy_max;
   } else {
     loc.x = new_loc_x;
   }
 
-  if(new_loc_y < LOC_MIN) {
-    loc.y = LOC_MIN;
-  } else if(new_loc_y > LOC_MAX) {
-    loc.y = LOC_MAX;
+  if(new_loc_y < xy_min) {
+    loc.y = xy_min;
+  } else if(new_loc_y > xy_max) {
+    loc.y = xy_max;
   } else {
     loc.y = new_loc_y;
   }
 
-  if(new_loc_z < HEIGHT_MIN) {
-    loc.z = HEIGHT_MIN;
-  } else if(new_loc_z > HEIGHT_MAX) {
-    loc.z = HEIGHT_MAX;
+  if(new_loc_z < z_min) {
+    loc.z = z_min;
+  } else if(new_loc_z > z_max) {
+    loc.z = z_max;
   } else {
     loc.z = new_loc_z;
   }
