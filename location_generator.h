@@ -78,11 +78,12 @@ float get_rand_float_norm(float mu, float sigma) {
 struct Location init_loc(void) {
   const float z_init_max = 2;
   const float z_init_min = 1.5;
+  const float z_std = 0.05;
   struct Location loc;
 
   loc.x = get_rand_float_uni(xy_min, xy_max);
   loc.y = get_rand_float_uni(xy_min, xy_max);
-  loc.z = get_rand_float_uni(z_init_min, z_init_max);
+  loc.z = get_rand_float_norm(z_mean, z_std);
 
   return loc;
 }
@@ -97,9 +98,9 @@ struct Location update_loc(struct Location loc) {
   const float z_mean = 1.75;
 
   // Update coordinates
-  loc.x = loc.x + get_pos_neg() * get_rand_float_norm(max_dist / 2, max_dist / 3);
+  loc.x = loc.x + get_pos_neg() * get_rand_float_norm(max_dist / 2, max_dist / 6);
 
-  loc.y = loc.y + get_pos_neg() * get_rand_float_norm(max_dist / 2, max_dist / 3);
+  loc.y = loc.y + get_pos_neg() * get_rand_float_norm(max_dist / 2, max_dist / 6);
 
   // Check limits
   if(loc.x < xy_min) {
