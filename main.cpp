@@ -16,6 +16,7 @@ void print_loc(struct Location, int);
  * @return      [int]       0
  */
 int main(void) {
+  const int period = 1000;
   // Array of locations
   struct Location locs[10];
 
@@ -25,14 +26,12 @@ int main(void) {
   }
 
   while(1) {
-    // locs[0] = update_loc(locs[0]);
-    // print_loc(locs[0], 0);
     for(int i = 0; i < 10; i++) {
       locs[i] = update_loc(locs[i]);
       print_loc(locs[i], i);
     }
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(PERIOD));
+    std::this_thread::sleep_for(std::chrono::milliseconds(period));
   }
 
   return 0;
