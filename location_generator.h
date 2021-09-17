@@ -11,7 +11,7 @@ const int xy_max = 100;   // Upper limit of x and y in meter
 const int xy_min = 0;     // Lower limit of x and y in meter
 const int z_max = 3.5;    // Upper Limit of z in meter
 const int z_min = 0;      // Lower Limit of z in meter
-const int z_mean = 1.75;  // Average height of the sensor in meter
+const int z_mean = 1.65;  // Average height of the sensor in meter
 
 // struct Location: Structure to define a location with 3 coordinates
 struct Location {
@@ -139,7 +139,7 @@ void print_loc(struct Location loc, int loc_nr) {
 /**
  * add_white_noise: Function to add white noise to a Location structure
  * @param   [struct Location]   loc   Location the white noise should be added to
- * @return     [description]
+ * @return  [struct Location]   Returns the new location
  */
 struct Location add_white_noise(struct Location loc) {
   const float mu = 0;
