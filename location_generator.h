@@ -1,4 +1,4 @@
-// location_generator: Martin Pfatrisch
+// location_generator.h: Martin Pfatrisch
 // Description: Creates and updates a location randomly
 
 #include <iostream>

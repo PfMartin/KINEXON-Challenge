@@ -1,3 +1,6 @@
+# distributions.py: Martin Pfatrisch
+# Description: The program draws 4 normal distribution graphs for distributions used in the location generator
+
 import numpy as np
 import matplotlib.pyplot as plt
 

@@ -1,6 +1,6 @@
 # KINEXON C++ Challenge
 
-This is a git repository for taking the KINEXON C++ Challenge. The file contains the description of the challenge, as well is the documentation of the project structure.
+This is a git repository for taking the KINEXON C++ Challenge. The file contains the description of the challenge, as well as the documentation of the project structure.
 
 ## Description
 
