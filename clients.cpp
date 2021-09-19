@@ -19,17 +19,14 @@ struct Location update_loc(struct Location);
 // Function to set a GeneratedPosition
 position::GeneratedPosition update_position(position::GeneratedPosition gen_pos, uint64_t sensor_id, struct Location loc);
 
-
+static zmq::context_t ctx;
 
 int main(void) {
+  zmq::socket_t sock(ctx, zmq::socket_type::req);
+  sock.connect("tcp://127.0.01:5555");
 
-  // Initialize the zmq context with a single thread
-  zmq::context_t context{1};
-  // Construct a REQ (request) socket and connect to interface
-  zmq::socket_t socket{context, zmq::socket_type::req};
-  socket.connect("tcp://localhost:5555");
 
-  const std::string data{"Hello"};
+
 
   const int period = 1000;
 
@@ -51,15 +48,15 @@ int main(void) {
 
   while(1) {
     for(int i = 0; i < 10; i++) {
-      // Sending data
-      std::cout
-        << "Sending " << data << i << "..." << std::endl;
-      socket.send(zmq::buffer(data), zmq::send_flags::none);
+      std::string msg_out = std::to_string(i);
+      zmq::message_t z_out(msg_out);
+      sock.send(z_out, zmq::send_flags::none);
 
-      // Wait for reply from server
-      zmq::message_t reply{};
-      socket.recv(reply, zmq::recv_flags::none);
-      std::cout << "Received " << reply.to_string() << " (" << i << ")" << std::endl;
+      zmq::message_t z_in;
+      sock.recv(z_in);
+      std::cout
+        << "\nSending: " << msg_out
+        << " Received: " << z_in.to_string();
 
       // locs[i] = update_loc(locs[i]);
       //

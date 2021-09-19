@@ -1,34 +1,25 @@
-#include <string>
-#include <chrono>
-#include <thread>
 #include <iostream>
-
 #include <zmq.hpp>
 
-int main() {
-  using namespace std::chrono_literals;
+static zmq::context_t ctx;
 
-  // initialize the zmq context with a single IO thread
-  zmq::context_t context{1};
-
-  // contruct a REP (reply) socket and bind to interface
-  zmq::socket_t socket(context, zmq::socket_type::rep);
-  socket.bind("tcp://127.0.01:5555");
-
-  // prepare some static datafor responses
-  const std::string data{"World"};
+int main(void) {
+  zmq::socket_t sock(ctx, zmq::socket_type::rep);
+  sock.bind("tcp://127.0.0.1:5555");
 
   while(1) {
-    zmq::message_t request;
+    zmq::message_t z_in;
+    sock.recv(z_in);
 
-    // receive a request from client
-    socket.recv(request, zmq::recv_flags::none);
-    std::cout << "Received " << request.to_string() << std::endl;
+    int x = std::stoi(z_in.to_string());
+    std::cout
+      << "\nReceived: " << x
+      << " Sending: " << x * x << std::endl;
 
-    // simulate work
-    std::this_thread::sleep_for(1s);
+    x = x * x;
 
-    // send the reply to the client
-    socket.send(zmq::buffer(data), zmq::send_flags::none);
+    std::string msg_out = std::to_string(x);
+    zmq::message_t z_out(msg_out);
+    sock.send(z_out, zmq::send_flags::none);
   }
 }
