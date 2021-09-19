@@ -9,31 +9,27 @@
 #include "position.pb.h"
 
 
-// Function in location_generator.h to generate a random location
+// Prototypes for used functions
 struct Location init_loc(void);
-// Funtion in location_generator.h to update the location with random coordinates
 struct Location update_loc(struct Location);
-// // Function in location_generator.h to print the coordinates of a Location structure
-// void print_loc(struct Location, int);
-
-// Function to set a GeneratedPosition
 position::GeneratedPosition update_position(position::GeneratedPosition gen_pos, uint64_t sensor_id, struct Location loc);
+zmq::message_t serialize_message(position::GeneratedPosition gen_pos);
 
+const int period = 1000;
 static zmq::context_t ctx;
 
 int main(void) {
-  zmq::socket_t sock(ctx, zmq::socket_type::req);
-  sock.connect("tcp://127.0.01:5555");
-
-
-
-
-  const int period = 1000;
+  // Zmq socket setup
+  zmq::socket_t sock(ctx, zmq::socket_type::push);
+  sock.bind("tcp://127.0.0.1:5555");
+  std::cout << "Binding socket to tcp://127.0.0.1:5555" << std::endl;
 
   // Array of locations
   struct Location locs[10];
 
   position::GeneratedPosition gen_pos;
+
+  zmq::message_t z_out;
 
   // Initialize locations
   for(int i = 0; i < 10; i++) {
@@ -41,6 +37,8 @@ int main(void) {
 
     // Initialize a new position
     gen_pos = update_position(gen_pos, i, locs[i]);
+    z_out = serialize_message(gen_pos);
+    sock.send(z_out, zmq::send_flags::none);
   }
 
   std::this_thread::sleep_for(std::chrono::milliseconds(period));
@@ -48,20 +46,13 @@ int main(void) {
 
   while(1) {
     for(int i = 0; i < 10; i++) {
-      std::string msg_out = std::to_string(i);
-      zmq::message_t z_out(msg_out);
+      locs[i] = update_loc(locs[i]);
+
+      // Update the position
+      gen_pos = update_position(gen_pos, i, locs[i]);
+
+      z_out = serialize_message(gen_pos);
       sock.send(z_out, zmq::send_flags::none);
-
-      zmq::message_t z_in;
-      sock.recv(z_in);
-      std::cout
-        << "\nSending: " << msg_out
-        << " Received: " << z_in.to_string();
-
-      // locs[i] = update_loc(locs[i]);
-      //
-      // // Update the position
-      // gen_pos = update_position(gen_pos, i, locs[i]);
     }
 
     std::this_thread::sleep_for(std::chrono::milliseconds(period));
@@ -83,20 +74,29 @@ position::GeneratedPosition update_position(position::GeneratedPosition gen_pos,
   uint64_t t_stamp;
   t_stamp = time(NULL);
 
-  std::cout
-    << "\nSensor " << sensor_id
-    << "\nTimeStamp: " << t_stamp
-    << "\nx = " << loc.x << " | "
-    << "y = " << loc.y << " | "
-    << "z = " << loc.z << std::endl;
-
   gen_pos.set_sensorid(sensor_id);
   gen_pos.set_timestamp_usec(t_stamp);
   gen_pos.mutable_position()->set_x(loc.x);
   gen_pos.mutable_position()->set_y(loc.y);
   gen_pos.mutable_position()->set_z(loc.z);
 
-  std::cout << "Sensor " << sensor_id << " initialized: " << gen_pos.IsInitialized() << std::endl;
-
   return gen_pos;
+}
+
+
+/**
+ * serialize_message: Serializes a zmq message in order to send it
+ * @param   [position::GeneratedPosition]   gen_pos   The GeneratedPosition, that should be serialized
+ * @return  [zmq::message_t]                          The serialized message ready to be send
+ */
+zmq::message_t serialize_message(position::GeneratedPosition gen_pos) {
+
+  auto bytes = gen_pos.ByteSizeLong();
+  zmq::message_t z_out(bytes);
+  gen_pos.SerializeToArray(z_out.data(), bytes);
+
+  std::cout << "\nSensor " << gen_pos.sensorid() << " initialized: " << gen_pos.IsInitialized() << std::endl;
+  std::cout << "Sending Sensor " << gen_pos.sensorid() << std::endl;
+
+  return z_out;
 }
