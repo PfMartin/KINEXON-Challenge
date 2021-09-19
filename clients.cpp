@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <time.h>
+#include <zmq.hpp>
 
 #include "location_generator.h"
 #include "position.pb.h"
@@ -18,11 +19,18 @@ struct Location update_loc(struct Location);
 // Function to set a GeneratedPosition
 position::GeneratedPosition update_position(position::GeneratedPosition gen_pos, uint64_t sensor_id, struct Location loc);
 
-/**
- * main: Main function
- * @return      [int]       0
- */
+
+
 int main(void) {
+
+  // Initialize the zmq context with a single thread
+  zmq::context_t context{1};
+  // Construct a REQ (request) socket and connect to interface
+  zmq::socket_t socket{context, zmq::socket_type::req};
+  socket.connect("tcp://localhost:5555");
+
+  const std::string data{"Hello"};
+
   const int period = 1000;
 
   // Array of locations
@@ -43,10 +51,20 @@ int main(void) {
 
   while(1) {
     for(int i = 0; i < 10; i++) {
-      locs[i] = update_loc(locs[i]);
+      // Sending data
+      std::cout
+        << "Sending " << data << i << "..." << std::endl;
+      socket.send(zmq::buffer(data), zmq::send_flags::none);
 
-      // Update the position
-      gen_pos = update_position(gen_pos, i, locs[i]);
+      // Wait for reply from server
+      zmq::message_t reply{};
+      socket.recv(reply, zmq::recv_flags::none);
+      std::cout << "Received " << reply.to_string() << " (" << i << ")" << std::endl;
+
+      // locs[i] = update_loc(locs[i]);
+      //
+      // // Update the position
+      // gen_pos = update_position(gen_pos, i, locs[i]);
     }
 
     std::this_thread::sleep_for(std::chrono::milliseconds(period));
