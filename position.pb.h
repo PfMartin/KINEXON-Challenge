@@ -385,7 +385,7 @@ class GeneratedPosition final :
   enum : int {
     kPositionFieldNumber = 3,
     kSensorIdFieldNumber = 1,
-    kTimestampUsecFieldNumber = 2,
+    kTimeStampUsecFieldNumber = 2,
   };
   // required .position.Data3d position = 3;
   bool has_position() const;
@@ -418,17 +418,17 @@ class GeneratedPosition final :
   void _internal_set_sensorid(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
-  // required uint64 timestamp_usec = 2;
-  bool has_timestamp_usec() const;
+  // required uint64 timeStampUsec = 2;
+  bool has_timestampusec() const;
   private:
-  bool _internal_has_timestamp_usec() const;
+  bool _internal_has_timestampusec() const;
   public:
-  void clear_timestamp_usec();
-  ::PROTOBUF_NAMESPACE_ID::uint64 timestamp_usec() const;
-  void set_timestamp_usec(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  void clear_timestampusec();
+  ::PROTOBUF_NAMESPACE_ID::uint64 timestampusec() const;
+  void set_timestampusec(::PROTOBUF_NAMESPACE_ID::uint64 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_timestamp_usec() const;
-  void _internal_set_timestamp_usec(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_timestampusec() const;
+  void _internal_set_timestampusec(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
   // @@protoc_insertion_point(class_scope:position.GeneratedPosition)
@@ -445,7 +445,7 @@ class GeneratedPosition final :
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::position::Data3d* position_;
   ::PROTOBUF_NAMESPACE_ID::uint64 sensorid_;
-  ::PROTOBUF_NAMESPACE_ID::uint64 timestamp_usec_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 timestampusec_;
   friend struct ::TableStruct_position_2eproto;
 };
 // ===================================================================
@@ -575,32 +575,32 @@ inline void GeneratedPosition::set_sensorid(::PROTOBUF_NAMESPACE_ID::uint64 valu
   // @@protoc_insertion_point(field_set:position.GeneratedPosition.sensorId)
 }
 
-// required uint64 timestamp_usec = 2;
-inline bool GeneratedPosition::_internal_has_timestamp_usec() const {
+// required uint64 timeStampUsec = 2;
+inline bool GeneratedPosition::_internal_has_timestampusec() const {
   bool value = (_has_bits_[0] & 0x00000004u) != 0;
   return value;
 }
-inline bool GeneratedPosition::has_timestamp_usec() const {
-  return _internal_has_timestamp_usec();
+inline bool GeneratedPosition::has_timestampusec() const {
+  return _internal_has_timestampusec();
 }
-inline void GeneratedPosition::clear_timestamp_usec() {
-  timestamp_usec_ = uint64_t{0u};
+inline void GeneratedPosition::clear_timestampusec() {
+  timestampusec_ = uint64_t{0u};
   _has_bits_[0] &= ~0x00000004u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint64 GeneratedPosition::_internal_timestamp_usec() const {
-  return timestamp_usec_;
+inline ::PROTOBUF_NAMESPACE_ID::uint64 GeneratedPosition::_internal_timestampusec() const {
+  return timestampusec_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint64 GeneratedPosition::timestamp_usec() const {
-  // @@protoc_insertion_point(field_get:position.GeneratedPosition.timestamp_usec)
-  return _internal_timestamp_usec();
+inline ::PROTOBUF_NAMESPACE_ID::uint64 GeneratedPosition::timestampusec() const {
+  // @@protoc_insertion_point(field_get:position.GeneratedPosition.timeStampUsec)
+  return _internal_timestampusec();
 }
-inline void GeneratedPosition::_internal_set_timestamp_usec(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+inline void GeneratedPosition::_internal_set_timestampusec(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   _has_bits_[0] |= 0x00000004u;
-  timestamp_usec_ = value;
+  timestampusec_ = value;
 }
-inline void GeneratedPosition::set_timestamp_usec(::PROTOBUF_NAMESPACE_ID::uint64 value) {
-  _internal_set_timestamp_usec(value);
-  // @@protoc_insertion_point(field_set:position.GeneratedPosition.timestamp_usec)
+inline void GeneratedPosition::set_timestampusec(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_timestampusec(value);
+  // @@protoc_insertion_point(field_set:position.GeneratedPosition.timeStampUsec)
 }
 
 // required .position.Data3d position = 3;

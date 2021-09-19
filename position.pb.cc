@@ -35,7 +35,7 @@ constexpr GeneratedPosition::GeneratedPosition(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : position_(nullptr)
   , sensorid_(uint64_t{0u})
-  , timestamp_usec_(uint64_t{0u}){}
+  , timestampusec_(uint64_t{0u}){}
 struct GeneratedPositionDefaultTypeInternal {
   constexpr GeneratedPositionDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -70,7 +70,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_position_2eproto::offsets[] PR
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::position::GeneratedPosition, sensorid_),
-  PROTOBUF_FIELD_OFFSET(::position::GeneratedPosition, timestamp_usec_),
+  PROTOBUF_FIELD_OFFSET(::position::GeneratedPosition, timestampusec_),
   PROTOBUF_FIELD_OFFSET(::position::GeneratedPosition, position_),
   1,
   2,
@@ -88,14 +88,14 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_position_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\016position.proto\022\010position\")\n\006Data3d\022\t\n\001"
-  "x\030\001 \002(\002\022\t\n\001y\030\002 \002(\002\022\t\n\001z\030\003 \002(\002\"a\n\021Generat"
-  "edPosition\022\020\n\010sensorId\030\001 \002(\004\022\026\n\016timestam"
-  "p_usec\030\002 \002(\004\022\"\n\010position\030\003 \002(\0132\020.positio"
-  "n.Data3d"
+  "x\030\001 \002(\002\022\t\n\001y\030\002 \002(\002\022\t\n\001z\030\003 \002(\002\"`\n\021Generat"
+  "edPosition\022\020\n\010sensorId\030\001 \002(\004\022\025\n\rtimeStam"
+  "pUsec\030\002 \002(\004\022\"\n\010position\030\003 \002(\0132\020.position"
+  ".Data3d"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_position_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_position_2eproto = {
-  false, false, 168, descriptor_table_protodef_position_2eproto, "position.proto", 
+  false, false, 167, descriptor_table_protodef_position_2eproto, "position.proto", 
   &descriptor_table_position_2eproto_once, nullptr, 0, 2,
   schemas, file_default_instances, TableStruct_position_2eproto::offsets,
   file_level_metadata_position_2eproto, file_level_enum_descriptors_position_2eproto, file_level_service_descriptors_position_2eproto,
@@ -399,7 +399,7 @@ class GeneratedPosition::_Internal {
   static void set_has_sensorid(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
-  static void set_has_timestamp_usec(HasBits* has_bits) {
+  static void set_has_timestampusec(HasBits* has_bits) {
     (*has_bits)[0] |= 4u;
   }
   static const ::position::Data3d& position(const GeneratedPosition* msg);
@@ -434,16 +434,16 @@ GeneratedPosition::GeneratedPosition(const GeneratedPosition& from)
     position_ = nullptr;
   }
   ::memcpy(&sensorid_, &from.sensorid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&timestamp_usec_) -
-    reinterpret_cast<char*>(&sensorid_)) + sizeof(timestamp_usec_));
+    static_cast<size_t>(reinterpret_cast<char*>(&timestampusec_) -
+    reinterpret_cast<char*>(&sensorid_)) + sizeof(timestampusec_));
   // @@protoc_insertion_point(copy_constructor:position.GeneratedPosition)
 }
 
 void GeneratedPosition::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&position_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&timestamp_usec_) -
-    reinterpret_cast<char*>(&position_)) + sizeof(timestamp_usec_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&timestampusec_) -
+    reinterpret_cast<char*>(&position_)) + sizeof(timestampusec_));
 }
 
 GeneratedPosition::~GeneratedPosition() {
@@ -481,8 +481,8 @@ void GeneratedPosition::Clear() {
   }
   if (cached_has_bits & 0x00000006u) {
     ::memset(&sensorid_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&timestamp_usec_) -
-        reinterpret_cast<char*>(&sensorid_)) + sizeof(timestamp_usec_));
+        reinterpret_cast<char*>(&timestampusec_) -
+        reinterpret_cast<char*>(&sensorid_)) + sizeof(timestampusec_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -504,11 +504,11 @@ const char* GeneratedPosition::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
         } else
           goto handle_unusual;
         continue;
-      // required uint64 timestamp_usec = 2;
+      // required uint64 timeStampUsec = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          _Internal::set_has_timestamp_usec(&has_bits);
-          timestamp_usec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_timestampusec(&has_bits);
+          timestampusec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -558,10 +558,10 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_sensorid(), target);
   }
 
-  // required uint64 timestamp_usec = 2;
+  // required uint64 timeStampUsec = 2;
   if (cached_has_bits & 0x00000004u) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(2, this->_internal_timestamp_usec(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(2, this->_internal_timestampusec(), target);
   }
 
   // required .position.Data3d position = 3;
@@ -596,9 +596,9 @@ size_t GeneratedPosition::RequiredFieldsByteSizeFallback() const {
     total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_sensorid());
   }
 
-  if (_internal_has_timestamp_usec()) {
-    // required uint64 timestamp_usec = 2;
-    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_timestamp_usec());
+  if (_internal_has_timestampusec()) {
+    // required uint64 timeStampUsec = 2;
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_timestampusec());
   }
 
   return total_size;
@@ -616,8 +616,8 @@ size_t GeneratedPosition::ByteSizeLong() const {
     // required uint64 sensorId = 1;
     total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_sensorid());
 
-    // required uint64 timestamp_usec = 2;
-    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_timestamp_usec());
+    // required uint64 timeStampUsec = 2;
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_timestampusec());
 
   } else {
     total_size += RequiredFieldsByteSizeFallback();
@@ -657,7 +657,7 @@ void GeneratedPosition::MergeFrom(const GeneratedPosition& from) {
       sensorid_ = from.sensorid_;
     }
     if (cached_has_bits & 0x00000004u) {
-      timestamp_usec_ = from.timestamp_usec_;
+      timestampusec_ = from.timestampusec_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -684,8 +684,8 @@ void GeneratedPosition::InternalSwap(GeneratedPosition* other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(GeneratedPosition, timestamp_usec_)
-      + sizeof(GeneratedPosition::timestamp_usec_)
+      PROTOBUF_FIELD_OFFSET(GeneratedPosition, timestampusec_)
+      + sizeof(GeneratedPosition::timestampusec_)
       - PROTOBUF_FIELD_OFFSET(GeneratedPosition, position_)>(
           reinterpret_cast<char*>(&position_),
           reinterpret_cast<char*>(&other->position_));

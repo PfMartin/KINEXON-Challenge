@@ -10,6 +10,6 @@ message Data3d {
 
 message GeneratedPosition {
   required uint64 sensorId = 1;
-  required uint64 timestamp_usec = 2;
+  required uint64 timeStampUsec = 2;
   required Data3d position = 3;
 }
