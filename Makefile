@@ -1,10 +1,9 @@
-program: main.cpp
-	g++ -std=c++17 main.cpp position.pb.cc -o main `pkg-config --cflags --libs protobuf`
-	# g++ -o main main.cpp
+program: clients.cpp
+	g++ -std=c++17 clients.cpp position.pb.cc -o clients `pkg-config --cflags --libs protobuf`
 
 proto: position.proto
 	protoc -I=./ --cpp_out=./ ./position.proto
 
 all: all
-	g++ -lprotobuf -o main main.cpp
+	g++ -std=c++17 clients.cpp position.pb.cc -o clients `pkg-config --cflags --libs protobuf`
 	protoc -I=./ --cpp_out=./ ./position.proto

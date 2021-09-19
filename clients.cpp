@@ -12,8 +12,8 @@
 struct Location init_loc(void);
 // Funtion in location_generator.h to update the location with random coordinates
 struct Location update_loc(struct Location);
-// Function in location_generator.h to print the coordinates of a Location structure
-void print_loc(struct Location, int);
+// // Function in location_generator.h to print the coordinates of a Location structure
+// void print_loc(struct Location, int);
 
 // Function to set a GeneratedPosition
 position::GeneratedPosition update_position(position::GeneratedPosition gen_pos, uint64_t sensor_id, struct Location loc);
