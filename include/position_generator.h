@@ -11,7 +11,7 @@
 
 const int xyMax = 100;   // Upper limit of x and y in meter
 const int xyMin = 0;     // Lower limit of x and y in meter
-const int zMean = 1.65;  // Average height of the sensor in meter
+const float zMean = 1.65;  // Average height of the sensor in meter
 
 // struct Data3d: Structure to define a position with 3 coordinates
 struct Data3d {
@@ -86,7 +86,6 @@ struct Data3d initPosition(void) {
  */
 struct Data3d updatePosition(struct Data3d data3d) {
   const float maxDist = 8.76;      // Maximum distance in 1 second in meter
-  const float zMean = 1.75;
 
   // Update coordinates
   data3d.x = data3d.x + getPosNeg() * getRandFloatNorm(maxDist / 2, maxDist / 6);
