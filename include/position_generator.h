@@ -86,6 +86,7 @@ struct Data3d initPosition(void) {
  */
 struct Data3d updatePosition(struct Data3d data3d) {
   const float maxDist = 8.76;      // Maximum distance in 1 second in meter
+  const float zStd = 0.3;
 
   // Update coordinates
   data3d.x = data3d.x + getPosNeg() * getRandFloatNorm(maxDist / 2, maxDist / 6);
@@ -106,7 +107,7 @@ struct Data3d updatePosition(struct Data3d data3d) {
   }
 
   // z can be calculated directly since there is no speed limit
-  data3d.z = getRandFloatNorm(zMean, zMean / 5);
+  data3d.z = getRandFloatNorm(zMean, zStd);
 
   // Add white noise to the data3d
   data3d = addWhiteNoise(data3d);

@@ -29,28 +29,26 @@ message GeneratedPosition {
 }
 ```
 
-## build
+## Project structure
+
+#### build
 
 All executables for running the programm are located in the folder `build`. Here the executable `server` starts the server, which listens to data from the sent by the executable `clients`. In order to start the communication it is recommended to start the server first and afterwards the clients.
 
-## distribution_graphs
+#### distribution_graphs
 
 The folder `distribution_graphs` contains a poetry project to draw distribution graphs related with the position generator. Since multiple random data is generated in the position generator, the python script `distribution_graphs.py` helps with visualizing the possible values for each normal distribution.
 
 The dependencies for the script are managed by the package `poetry`, which makes it easy to share dependencies between developers. Just install poetry with `pip install poetry` and apply the dependencies defined in `poetry.lock` to your local repository with `poetry install`.
 
+#### documentation
+
+In `documentation` the source code is documented in several files. Here, explanations about the chosen values and the functions in general can be found.
+
 ## include
 
-#### position.pb.h
+This folder contains header files, which contain useful functions for `clients.cpp` and `server.cpp`. These header files are include in `clients.cpp` or `server.cpp` or both.
 
 ## src
 
-#### Makefile
-
-#### position.proto
-
-#### clients
-
-#### server
-
-## Assumptions
+`src` contains the source files that need to be compiled, as well as instructions on how to compile them in the `Makefile`.
