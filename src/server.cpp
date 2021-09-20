@@ -1,6 +1,6 @@
 #include <iostream>
 #include <zmq.hpp>
-#include "position.pb.h"
+#include "../include/position.pb.h"
 
 static zmq::context_t ctx;
 
