@@ -69,7 +69,7 @@ int main(void) {
  * @param  [uint64_t]                             sensorId Identifiert of the sensor
  * @param  [uint64_t]                             tStamp   Time stamp in seconds
  * @param  [struct Data3d]                      data3d       Data3d, which should its x, y and z coordinates to the GeneratedPosition
- * @return [position::GeneratedPosition]                    The updated GeneratedPosition
+ * @return [position::GeneratedPosition]                   The updated GeneratedPosition
  */
 position::GeneratedPosition updatePosition(position::GeneratedPosition genPos, uint64_t sensorId, struct Data3d data3d) {
   uint64_t tStamp;
@@ -88,7 +88,7 @@ position::GeneratedPosition updatePosition(position::GeneratedPosition genPos, u
 /**
  * serializeMessage: Serializes a zmq message in order to send it
  * @param   [position::GeneratedPosition]   genPos   The GeneratedPosition, that should be serialized
- * @return  [zmq::message_t]                          The serialized message ready to be send
+ * @return  [zmq::message_t]                         The serialized message ready to be send
  */
 zmq::message_t serializeMessage(position::GeneratedPosition genPos) {
   std::cout << "\nSensor " << genPos.sensorid() << " initialized: " << genPos.IsInitialized() << std::endl;

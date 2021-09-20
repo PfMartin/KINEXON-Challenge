@@ -70,7 +70,7 @@ By tinkering with the initialization parameters for each normal distribution the
 
 #### server
 
-## Asumptions
+## Assumptions
 
 #### Maximum Velocity
 
