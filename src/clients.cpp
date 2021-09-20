@@ -12,7 +12,7 @@
 // Prototypes for used functions
 struct Data3d initPosition(void);
 struct Data3d updatePosition(struct Data3d);
-position::GeneratedPosition updatePosition(position::GeneratedPosition genPos, uint64_t, struct Data3d);
+position::GeneratedPosition setPosition(uint64_t, struct Data3d);
 zmq::message_t serializeMessage(position::GeneratedPosition);
 
 const int period = 1000;
@@ -24,18 +24,15 @@ int main(void) {
   sock.bind("tcp://127.0.0.1:5555");
   std::cout << "Binding socket to tcp://127.0.0.1:5555" << std::endl;
 
-  // Array of positions
   struct Data3d data3d[10];
-
   position::GeneratedPosition genPos;
-
   zmq::message_t zOut;
 
   // Initialize all positions
   for(int i = 0; i < 10; i++) {
     data3d[i] = initPosition();
 
-    genPos = updatePosition(genPos, i, data3d[i]);
+    genPos = setPosition(i, data3d[i]);
     zOut = serializeMessage(genPos);
     sock.send(zOut, zmq::send_flags::none);
   }
@@ -49,7 +46,7 @@ int main(void) {
       data3d[i] = updatePosition(data3d[i]);
 
       // Update the position
-      genPos = updatePosition(genPos, i, data3d[i]);
+      genPos = setPosition(i, data3d[i]);
 
       zOut = serializeMessage(genPos);
       sock.send(zOut, zmq::send_flags::none);
@@ -64,16 +61,18 @@ int main(void) {
 
 
 /**
- * updatePosition: Updates a GeneratedPosition with a sensor id, a time stamp and values from a position
+ * setPosition: Updates a GeneratedPosition with a sensor id, a time stamp and values from a position
  * @param  [position::GeneratedPosition]          genPos   GeneratedPosition, that should be updated
  * @param  [uint64_t]                             sensorId Identifiert of the sensor
  * @param  [uint64_t]                             tStamp   Time stamp in seconds
  * @param  [struct Data3d]                      data3d       Data3d, which should its x, y and z coordinates to the GeneratedPosition
  * @return [position::GeneratedPosition]                   The updated GeneratedPosition
  */
-position::GeneratedPosition updatePosition(position::GeneratedPosition genPos, uint64_t sensorId, struct Data3d data3d) {
+position::GeneratedPosition setPosition(uint64_t sensorId, struct Data3d data3d) {
   uint64_t tStamp;
   tStamp = time(NULL);
+
+  position::GeneratedPosition genPos;
 
   genPos.set_sensorid(sensorId);
   genPos.set_timestampusec(tStamp);
