@@ -1,6 +1,6 @@
 # KINEXON C++ Challenge
 
-This is a git repository for taking the KINEXON C++ Challenge. The file contains the description of the challenge, as well as the documentation of the project structure.
+This is a git repository for taking the KINEXON C++ Challenge. The file contains the description of the challenge, as well as the documentation regarding the project files.
 
 ## Description
 
@@ -28,6 +28,47 @@ message GeneratedPosition {
   required Data3d position = 3;
 }
 ```
+
+## build
+
+All executables for running the programm are located in the folder `build`. Here the executable `server` starts the server, which listens to data from the sent by the executable `clients`. In order to start the communication it is recommended to start the server first and afterwards the clients.
+
+## distribution_graphs
+
+The folder `distribution_graphs` contains a poetry project to draw distribution graphs related with the position generator. Since multiple random data is generated in the position generator, the python script `distribution_graphs.py` helps with visualizing the possible values for each normal distribution.
+
+#### Setup
+
+The dependencies for the script are managed by the package `poetry`, which makes it easy to share dependencies between developers. Just install poetry with `pip install poetry` and apply the dependencies defined in `poetry.lock` to your local repository with `poetry install`.
+
+#### distribtion_graphs.py
+
+This script draws 4 histograms for normal distributions. These histograms visualize the normal distributions for the following random number generations:
+
+- Update of a sensor position's x- and y-values
+- Noise added to each coordinate of the sensor position
+- Initialization of a sensor position's z-value
+- Update of a sensor position's z-value
+
+For each normal distribution an instance of the class `NormalDistribution` is initialized. Afterwards the class' method `plotHistogram`, which draws the histogram using the package `matplotlib`, is called.
+
+By tinkering with the initialization parameters for each normal distribution the output values can be fitted to the real world scenario as closely as possible.
+
+## include
+
+#### position_generator.h
+
+#### position.pb.h
+
+## src
+
+#### Makefile
+
+#### position.proto
+
+#### clients
+
+#### server
 
 ## Asumptions
 

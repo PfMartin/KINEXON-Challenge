@@ -60,10 +60,18 @@ class NormalDistribution:
         plot.set_xlim([actualMean - np.std(self.values) * 4, actualMean + np.std(self.values) * 4])
 
 def main():
-    xyUpdate = NormalDistribution(8.76 / 2, 8.76 / 6, 'Normal Distribution for Updating X or Y coordinates')
-    noise = NormalDistribution(0, 0.01, 'Normal Distribution for white noise')
-    zInit = NormalDistribution(1.65, 0.05, 'Normal Distribution for the Initialization of Z')
-    zUpdate = NormalDistribution(1.65, 1.65 / 5, 'Normal Distribution for Updating Z')
+    max_dist = 8.76
+    mu_xy = max_dist / 2
+
+    mu_noise = 0
+    sigma_noise = 0.01
+
+    mu_z = 1.65
+
+    xyUpdate = NormalDistribution(mu_xy, max_dist / 6, 'Normal Distribution for Updating X or Y coordinates')
+    noise = NormalDistribution(mu_noise, sigma_noise, 'Normal Distribution for white noise')
+    zInit = NormalDistribution(mu_z, 0.05, 'Normal Distribution for the Initialization of Z')
+    zUpdate = NormalDistribution(mu_z, mu_z / 5, 'Normal Distribution for Updating Z')
 
     xyUpdate.plotHistogram(1)
     noise.plotHistogram(2)
