@@ -1,5 +1,7 @@
 // position_generator.h: Martin Pfatrisch
 // Description: Creates and updates a position randomly
+#ifndef POSITION_GENERATOR_H
+#define POSITION_GENERATOR_H
 
 #include <iostream>
 #include <random>
@@ -128,3 +130,5 @@ struct Data3d addWhiteNoise(struct Data3d data3d) {
 
   return data3d;
 }
+
+#endif // POSITION_GENERATOR_H
