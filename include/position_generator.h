@@ -51,7 +51,7 @@ float getRandFloatUni(float lowerLimit, float upperLimit) {
 }
 
 /**
- * getRandFloatNorm: Function to generate a random float between 0 and a given maximum limit using a normal distribution
+ * getRandFloatNorm: Function to generate a random float using a normal distribution
  * @param   [float]   mu      Defines the mean for the distribution
  * @param   [float]   sigma   Defines the standard deviation for the distribution
  * @return  [float]   Returns the generated random float
