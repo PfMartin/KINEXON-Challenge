@@ -20,10 +20,13 @@ struct Data3d {
   float z;
 };
 
+int sign;
+float randFloat;
+
 // Prototypes for created functions
-int getPosNeg();
-float getRandFloatUni(float, float);
-float getRandFloatNorm(float, float);
+void getPosNeg(int&);
+void getRandFloatUni(float&, float, float);
+void getRandFloatNorm(float&, float, float);
 struct Data3d initPosition(void);
 struct Data3d updatePosition(struct Data3d);
 struct Data3d addWhiteNoise(struct Data3d);
@@ -32,8 +35,8 @@ struct Data3d addWhiteNoise(struct Data3d);
  * getPosNeg: Function to return either -1 or 1 depending on the binary value of the random number. In case the second bit is set the function returns 1. In case it's not set, the function returns -1
  * @return  [integer]   Returns either 1 or -1
  */
-int getPosNeg() {
-  return (random() & 2) - 1;
+void getPosNeg(int& sign) {
+  sign = (random() & 2) - 1;
 }
 
 /**
@@ -42,12 +45,12 @@ int getPosNeg() {
  * @param   [float]   upperLimit   Defines the upper limit for the distribution
  * @return  [float]   Returns the generated random float
  */
-float getRandFloatUni(float lowerLimit, float upperLimit) {
-  std::random_device randFloat;
-  std::mt19937 generator(randFloat());
+void getRandFloatUni(float& randFloat, float lowerLimit, float upperLimit) {
+  std::random_device random;
+  std::mt19937 generator(random());
   std::uniform_real_distribution<float> distrib(lowerLimit, upperLimit);
 
-  return distrib(generator);
+  randFloat = distrib(generator);
 }
 
 /**
@@ -56,12 +59,12 @@ float getRandFloatUni(float lowerLimit, float upperLimit) {
  * @param   [float]   sigma   Defines the standard deviation for the distribution
  * @return  [float]   Returns the generated random float
  */
-float getRandFloatNorm(float mu, float sigma) {
-  std::random_device randFloat;
-  std::mt19937 generator(randFloat());
+void getRandFloatNorm(float& randFloat, float mu, float sigma) {
+  std::random_device random;
+  std::mt19937 generator(random());
   std::normal_distribution<float> distrib(mu, sigma); // mean, std deviation
 
-  return distrib(generator);
+  randFloat = distrib(generator);
 }
 
 /**
@@ -72,9 +75,14 @@ struct Data3d initPosition(void) {
   const float zStd = 0.05;
   struct Data3d data3d;
 
-  data3d.x = getRandFloatUni(xyMin, xyMax);
-  data3d.y = getRandFloatUni(xyMin, xyMax);
-  data3d.z = getRandFloatNorm(zMean, zStd);
+  getRandFloatUni(randFloat, xyMin, xyMax);
+  data3d.x = randFloat;
+
+  getRandFloatUni(randFloat, xyMin, xyMax);
+  data3d.y = randFloat;
+
+  getRandFloatUni(randFloat, xyMin, xyMax);
+  data3d.z = randFloat;
 
   return data3d;
 }
@@ -89,8 +97,13 @@ struct Data3d updatePosition(struct Data3d data3d) {
   const float zStd = 0.3;
 
   // Update coordinates
-  data3d.x = data3d.x + getPosNeg() * getRandFloatNorm(maxDist / 2, maxDist / 6);
-  data3d.y = data3d.y + getPosNeg() * getRandFloatNorm(maxDist / 2, maxDist / 6);
+  getPosNeg(sign);
+  getRandFloatNorm(randFloat, maxDist / 2, maxDist / 6);
+  data3d.x = data3d.x + sign * randFloat;
+
+  getPosNeg(sign);
+  getRandFloatNorm(randFloat, maxDist / 2, maxDist / 6);
+  data3d.y = data3d.y + sign * randFloat;
 
   // Check limits for x coordinate
   if(data3d.x < xyMin) {
@@ -107,7 +120,8 @@ struct Data3d updatePosition(struct Data3d data3d) {
   }
 
   // z can be calculated directly since there is no speed limit
-  data3d.z = getRandFloatNorm(zMean, zStd);
+  getRandFloatNorm(randFloat, zMean, zStd);
+  data3d.z = randFloat;
 
   // Add white noise to the data3d
   data3d = addWhiteNoise(data3d);
@@ -124,9 +138,14 @@ struct Data3d addWhiteNoise(struct Data3d data3d) {
   const float mu = 0;
   const float sigma = 0.01;
 
-  data3d.x = data3d.x + getRandFloatNorm(mu, sigma);
-  data3d.y = data3d.y + getRandFloatNorm(mu, sigma);
-  data3d.z = data3d.z + getRandFloatNorm(mu, sigma);
+  getRandFloatNorm(randFloat, mu, sigma);
+  data3d.x = data3d.x + randFloat;
+
+  getRandFloatNorm(randFloat, mu, sigma);
+  data3d.y = data3d.y + randFloat;
+
+  getRandFloatNorm(randFloat, mu, sigma);
+  data3d.z = data3d.z + randFloat;
 
   return data3d;
 }
