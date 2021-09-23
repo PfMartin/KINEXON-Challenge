@@ -20,6 +20,7 @@ struct Data3d {
   float z;
 };
 
+// A new value is assigned to these variables when the corresponding function is called
 int sign;
 float randFloat;
 
@@ -32,39 +33,39 @@ struct Data3d updatePosition(struct Data3d);
 struct Data3d addWhiteNoise(struct Data3d);
 
 /**
- * getPosNeg: Function to return either -1 or 1 depending on the binary value of the random number. In case the second bit is set the function returns 1. In case it's not set, the function returns -1
- * @return  [integer]   Returns either 1 or -1
+ * getPosNeg: Function to generate either -1 or 1 depending on the binary value of the random number. In case the second bit is set the generated value is 1. In case it's not set, the generated value is -1.
+ * @param   [int&]    intToUpdate   Reference to the integer that should be updated
  */
-void getPosNeg(int& sign) {
-  sign = (random() & 2) - 1;
+void getPosNeg(int& intToUpdate) {
+  intToUpdate = (random() & 2) - 1;
 }
 
 /**
- * getRandFloatUni: Function to generate a random float between 0 and a given maximum limit using a uniform distribution
- * @param   [float]   lowerLimit   Defines the lower limit for the distribution
- * @param   [float]   upperLimit   Defines the upper limit for the distribution
- * @return  [float]   Returns the generated random float
+ * getRandFloatUni: Function to generate a random float between a given lower limit and a given upper limit using a uniform distribution. It updates float randFloat with the generated value.
+ * @param   [float&]  floatToUpdate   Reference to the float that should be updated
+ * @param   [float]   lowerLimit      Defines the lower limit for the distribution
+ * @param   [float]   upperLimit      Defines the upper limit for the distribution
  */
-void getRandFloatUni(float& randFloat, float lowerLimit, float upperLimit) {
+void getRandFloatUni(float& floatToUpdate, float lowerLimit, float upperLimit) {
   std::random_device random;
   std::mt19937 generator(random());
   std::uniform_real_distribution<float> distrib(lowerLimit, upperLimit);
 
-  randFloat = distrib(generator);
+  floatToUpdate = distrib(generator);
 }
 
 /**
- * getRandFloatNorm: Function to generate a random float between 0 and a given maximum limit using a normal distribution
- * @param   [float]   mu      Defines the mean for the distribution
- * @param   [float]   sigma   Defines the standard deviation for the distribution
- * @return  [float]   Returns the generated random float
+ * getRandFloatNorm: Function to generate a random float using a normal distribution. It updates float randFloat with the generated value.
+ * @param   [float&]  floatToUpdate Reference to the float that should be updated
+ * @param   [float]   mu            Defines the mean for the distribution
+ * @param   [float]   sigma         Defines the standard deviation for the distribution
  */
-void getRandFloatNorm(float& randFloat, float mu, float sigma) {
+void getRandFloatNorm(float& floatToUpdate, float mu, float sigma) {
   std::random_device random;
   std::mt19937 generator(random());
   std::normal_distribution<float> distrib(mu, sigma); // mean, std deviation
 
-  randFloat = distrib(generator);
+  floatToUpdate = distrib(generator);
 }
 
 /**
