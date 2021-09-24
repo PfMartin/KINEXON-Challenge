@@ -10,15 +10,15 @@
 
 
 // Prototypes for used functions
-struct Data3d initPosition(void);
-struct Data3d updatePosition(struct Data3d);
+struct Data3d initPosition();
+struct Data3d updatePosition(struct Data3d&);
 position::GeneratedPosition setPosition(uint64_t, struct Data3d);
 zmq::message_t serializeMessage(position::GeneratedPosition);
 
 const int period = 1000;
 static zmq::context_t ctx;
 
-int main(void) {
+int main() {
   // Zmq socket setup
   zmq::socket_t sock(ctx, zmq::socket_type::push);
   sock.bind("tcp://127.0.0.1:5555");

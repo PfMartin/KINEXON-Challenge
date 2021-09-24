@@ -8,10 +8,9 @@
 #include <chrono>
 #include <thread>
 
-
-const int xyMax = 100;   // Upper limit of x and y in meter
-const int xyMin = 0;     // Lower limit of x and y in meter
-const float zMean = 1.65;  // Average height of the sensor in meter
+int xyMax = 100;   // Upper limit of x and y in meter
+int xyMin = 0;     // Lower limit of x and y in meter
+float zMean = 1.65;  // Average height of the sensor in meter
 
 // struct Data3d: Structure to define a position with 3 coordinates
 struct Data3d {
@@ -22,11 +21,11 @@ struct Data3d {
 
 // Prototypes for created functions
 int getPosNeg();
-float getRandFloatUni(float, float);
-float getRandFloatNorm(float, float);
-struct Data3d initPosition(void);
-struct Data3d updatePosition(struct Data3d);
-struct Data3d addWhiteNoise(struct Data3d);
+float getRandFloatUni(int&, int&);
+float getRandFloatNorm(float&, float&);
+struct Data3d initPosition();
+struct Data3d updatePosition(struct Data3d&);
+struct Data3d addWhiteNoise(struct Data3d&);
 
 /**
  * getPosNeg: Function to return either -1 or 1 depending on the binary value of the random number. In case the second bit is set the function returns 1. In case it's not set, the function returns -1
@@ -38,11 +37,11 @@ int getPosNeg() {
 
 /**
  * getRandFloatUni: Function to generate a random float between 0 and a given maximum limit using a uniform distribution
- * @param   [float]   lowerLimit   Defines the lower limit for the distribution
- * @param   [float]   upperLimit   Defines the upper limit for the distribution
+ * @param   [int]     lowerLimit   Defines the lower limit for the distribution
+ * @param   [int]     upperLimit   Defines the upper limit for the distribution
  * @return  [float]   Returns the generated random float
  */
-float getRandFloatUni(float lowerLimit, float upperLimit) {
+float getRandFloatUni(int &lowerLimit, int &upperLimit) {
   std::random_device randFloat;
   std::mt19937 generator(randFloat());
   std::uniform_real_distribution<float> distrib(lowerLimit, upperLimit);
@@ -56,7 +55,7 @@ float getRandFloatUni(float lowerLimit, float upperLimit) {
  * @param   [float]   sigma   Defines the standard deviation for the distribution
  * @return  [float]   Returns the generated random float
  */
-float getRandFloatNorm(float mu, float sigma) {
+float getRandFloatNorm(float &mu, float &sigma) {
   std::random_device randFloat;
   std::mt19937 generator(randFloat());
   std::normal_distribution<float> distrib(mu, sigma); // mean, std deviation
@@ -68,8 +67,8 @@ float getRandFloatNorm(float mu, float sigma) {
  * initPosition: Function to generate random coordinates for a Position
  *  * @return  [struct Data3d]  Returns a Position structure with x, y, and z coordinates
  */
-struct Data3d initPosition(void) {
-  const float zStd = 0.05;
+struct Data3d initPosition() {
+  float zStd = 0.05;
   struct Data3d data3d;
 
   data3d.x = getRandFloatUni(xyMin, xyMax);
@@ -84,13 +83,14 @@ struct Data3d initPosition(void) {
  * @param   [struct Data3d]   data3d   Position, that should be updated
  * @return  [struct Data3d]   Returns the new position
  */
-struct Data3d updatePosition(struct Data3d data3d) {
-  const float maxDist = 8.76;      // Maximum distance in 1 second in meter
-  const float zStd = 0.3;
+struct Data3d updatePosition(struct Data3d &data3d) {
+  float muDist = 4.38;
+  float sigmaDist = muDist / 3;
+  float zStd = 0.3;
 
   // Update coordinates
-  data3d.x = data3d.x + getPosNeg() * getRandFloatNorm(maxDist / 2, maxDist / 6);
-  data3d.y = data3d.y + getPosNeg() * getRandFloatNorm(maxDist / 2, maxDist / 6);
+  data3d.x = data3d.x + getPosNeg() * getRandFloatNorm(muDist, sigmaDist);
+  data3d.y = data3d.y + getPosNeg() * getRandFloatNorm(muDist, sigmaDist);
 
   // Check limits for x coordinate
   if(data3d.x < xyMin) {
@@ -120,9 +120,9 @@ struct Data3d updatePosition(struct Data3d data3d) {
  * @param   [struct Data3d]   data3d   Position the white noise should be added to
  * @return  [struct Data3d]   Returns the new position
  */
-struct Data3d addWhiteNoise(struct Data3d data3d) {
-  const float mu = 0;
-  const float sigma = 0.01;
+struct Data3d addWhiteNoise(struct Data3d &data3d) {
+  float mu = 0;
+  float sigma = 0.01;
 
   data3d.x = data3d.x + getRandFloatNorm(mu, sigma);
   data3d.y = data3d.y + getRandFloatNorm(mu, sigma);

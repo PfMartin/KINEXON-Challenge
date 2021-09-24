@@ -4,7 +4,7 @@
 
 static zmq::context_t ctx;
 
-int main(void) {
+int main() {
   zmq::socket_t sock(ctx, zmq::socket_type::pull);
   sock.connect("tcp://127.0.0.1:5555");
   std::cout << "Connecting socket to tcp://127.0.0.1:5555" << std::endl;
